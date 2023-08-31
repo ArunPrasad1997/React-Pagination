@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import TableCard from "../Table-Card/Table-Card";
 import Pagination from "react-js-pagination";
+import BeerItems from "../Beer-Items/Beer-Items";
+import BeerFiltering from "../Date-FIlter/Beer-Filtering";
 // import { useSelector } from "react-redux";
 
 function PaginationTable() {
   //   const paginateForward = useSelector((state) => state.currentState);
   const [details, setDetails] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [showFilter, setShowFilter] = useState(false);
 
   useEffect(() => {
     fetch(`https://api.punkapi.com/v2/beers?page=1&per_page=10`)
@@ -39,33 +43,36 @@ function PaginationTable() {
       })
       .catch((err) => console.log(err));
   };
+
+  const displayFilter = () => {
+    setShowFilter(!showFilter);
+  };
+
   return (
     <React.Fragment>
       <TableCard>
+        {showFilter && <BeerFiltering />}
+        <section className="text-center my-4">
+          <button className="btn btn-secondary" onClick={displayFilter}>
+            {showFilter ? "Cancel" : "Filter"}
+          </button>
+        </section>
         <br />
-        <table className="table">
+        {!showFilter && <table className="table">
           <thead>
             <tr>
               <th>#</th>
               <th>Name</th>
               <th>Tag Line</th>
               <th>First Brewed</th>
+              <th>Logo</th>
             </tr>
           </thead>
-          <tbody>
-            {details.map((data) => (
-              <tr key={data.id}>
-                <td>{data.id}</td>
-                <td>{data.name}</td>
-                <td>{data.first_brewed}</td>
-                <td>{data.first_brewed}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          <BeerItems beersList={details} />
+        </table>}
       </TableCard>
       <div className="d-flex justify-content-center py-2">
-        <Pagination
+        {!showFilter && <Pagination
           itemClass="page-item"
           linkClass="page-link"
           activePage={currentPage}
@@ -73,7 +80,7 @@ function PaginationTable() {
           totalItemsCount={325}
           pageRangeDisplayed={5}
           onChange={handlePageChange}
-        />
+        />}
       </div>
     </React.Fragment>
   );

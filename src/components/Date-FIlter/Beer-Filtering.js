@@ -77,7 +77,7 @@ function BeerFiltering() {
             value={brewedBefore}
             onChange={(e) => setBrewedBefore(e.target.value)}
           />
-          <button type="submit" hidden>Apply Filter</button>
+          <button type="submit">Apply Filter</button>
         </form>
       }
       <br />

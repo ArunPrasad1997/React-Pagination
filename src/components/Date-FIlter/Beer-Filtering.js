@@ -116,7 +116,7 @@ function BeerFiltering() {
       <br />
       <br />
       <br />
-      <table class="table my-4">
+    { brewedDataBefore.length > 0 &&  <table class="table my-4">
         <thead>
           <tr>
             <th>#</th>
@@ -151,7 +151,7 @@ function BeerFiltering() {
          </tr>
           ))} */}
         </tbody>
-      </table>
+      </table>}
     </React.Fragment>
   );
 }

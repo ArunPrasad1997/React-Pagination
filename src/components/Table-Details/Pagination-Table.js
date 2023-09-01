@@ -4,10 +4,10 @@ import Pagination from "react-js-pagination";
 import BeerItems from "../Beer-Items/Beer-Items";
 import { Link } from "react-router-dom";
 import LoadingSpinner from "../Loading-Spinner/Loading-Spinner";
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 function PaginationTable() {
-  //   const paginateForward = useSelector((state) => state.currentState);
+  const isLoading = useSelector((state) => state.auth.isLoading);
   const [details, setDetails] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -20,7 +20,7 @@ function PaginationTable() {
       })
       .then((res) => {
         setDetails(res);
-        setShowLoading(false);
+        setShowLoading(isLoading);
         console.log(res);
       })
       .catch((err) => console.log(err));
@@ -29,7 +29,7 @@ function PaginationTable() {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     // call API to get data based on pageNumber
-    setShowLoading(true);
+    setShowLoading(!isLoading);
     let currentPage = pageNumber;
     console.log(currentPage);
     fetchBeers(currentPage);
@@ -42,7 +42,7 @@ function PaginationTable() {
       })
       .then((res) => {
         setDetails(res);
-          setShowLoading(false);
+        setShowLoading(false);
         console.log(res);
       })
       .catch((err) => console.log(err));
@@ -71,6 +71,7 @@ function PaginationTable() {
               <th>Tag Line</th>
               <th>First Brewed</th>
               <th>Logo</th>
+              <th>Details</th>
             </tr>
           </thead>
           <BeerItems beersList={details} />

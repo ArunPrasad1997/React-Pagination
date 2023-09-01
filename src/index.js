@@ -10,8 +10,9 @@ import BeerFiltering from "./components/Date-FIlter/Beer-Filtering";
 import BeerDetails, {
   loader as details,
 } from "./components/Beer-Details/BeerDetails";
+import { Provider } from "react-redux";
+import store from "./store/redux-demo";
 
-// import store from './store/redux-demo';
 
 const router = createBrowserRouter([
   { path: "/", element: <App /> },
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
 ]);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  //   <Provider store={store}>
-  <RouterProvider router={router} />
-  //   </Provider>
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
 );

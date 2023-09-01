@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function BeerItems({ beersList }) {
   return (
@@ -18,6 +19,7 @@ function BeerItems({ beersList }) {
               height={50}
             />
           </td>
+          <td><Link to={`/beer-details/${data.id}`}>Details</Link></td>
         </tr>
       ))}
     </tbody>

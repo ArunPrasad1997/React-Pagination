@@ -7,6 +7,7 @@ function BeerDetails() {
   return (
     <Container className="my-5">
         <h1>Product Details</h1>
+        <br></br>
       <Row>
         {post.map((data) => (
           <>
@@ -20,11 +21,12 @@ function BeerDetails() {
               />
             </Col>
             <Col md={6}>
+                <br></br>
               <h2>{data.name}</h2>
               <p>
                {data.description}
               </p>
-              <p className="font-weight-bold">$19.99</p>
+              <p className="font-weight-bold">{data.boil_volume.value} Liters</p>
               <Button variant="primary">Add to Cart</Button>
               <Link to="..">
                 <Button variant="primary mx-4">Back</Button>

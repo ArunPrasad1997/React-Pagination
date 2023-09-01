@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import TableCard from "../Table-Card/Table-Card";
 import Pagination from "react-js-pagination";
 import BeerItems from "../Beer-Items/Beer-Items";
-import BeerFiltering from "../Date-FIlter/Beer-Filtering";
+import { Link } from "react-router-dom";
+import LoadingSpinner from "../Loading-Spinner/Loading-Spinner";
 // import { useSelector } from "react-redux";
 
 function PaginationTable() {
@@ -10,7 +11,7 @@ function PaginationTable() {
   const [details, setDetails] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [showFilter, setShowFilter] = useState(false);
+  const [showLoading, setShowLoading] = useState(true);
 
   useEffect(() => {
     fetch(`https://api.punkapi.com/v2/beers?page=1&per_page=10`)
@@ -19,6 +20,7 @@ function PaginationTable() {
       })
       .then((res) => {
         setDetails(res);
+        setShowLoading(false);
         console.log(res);
       })
       .catch((err) => console.log(err));
@@ -27,6 +29,7 @@ function PaginationTable() {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     // call API to get data based on pageNumber
+    setShowLoading(true);
     let currentPage = pageNumber;
     console.log(currentPage);
     fetchBeers(currentPage);
@@ -39,26 +42,28 @@ function PaginationTable() {
       })
       .then((res) => {
         setDetails(res);
+          setShowLoading(false);
         console.log(res);
       })
       .catch((err) => console.log(err));
   };
 
-  const displayFilter = () => {
-    setShowFilter(!showFilter);
-  };
+  // const displayFilter = () => {
+  //   setShowFilter(!showFilter);
+  // };
 
   return (
     <React.Fragment>
+      {/* {details.length === 0 && <LoadingSpinner />} */}
+      {showLoading ? <LoadingSpinner /> : ""}
       <TableCard>
-        {showFilter && <BeerFiltering />}
         <section className="text-center my-4">
-          <button className="btn btn-secondary" onClick={displayFilter}>
-            {showFilter ? "Cancel" : "Filter"}
-          </button>
+          <Link to="/filter-beers">
+            <button>Filter</button>
+          </Link>
         </section>
         <br />
-        {!showFilter && <table className="table">
+        <table className="table">
           <thead>
             <tr>
               <th>#</th>
@@ -69,18 +74,20 @@ function PaginationTable() {
             </tr>
           </thead>
           <BeerItems beersList={details} />
-        </table>}
+        </table>
       </TableCard>
       <div className="d-flex justify-content-center py-2">
-        {!showFilter && <Pagination
-          itemClass="page-item"
-          linkClass="page-link"
-          activePage={currentPage}
-          itemsCountPerPage={10}
-          totalItemsCount={325}
-          pageRangeDisplayed={5}
-          onChange={handlePageChange}
-        />}
+        {details.length > 0 && (
+          <Pagination
+            itemClass="page-item"
+            linkClass="page-link"
+            activePage={currentPage}
+            itemsCountPerPage={10}
+            totalItemsCount={325}
+            pageRangeDisplayed={5}
+            onChange={handlePageChange}
+          />
+        )}
       </div>
     </React.Fragment>
   );

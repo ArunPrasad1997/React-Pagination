@@ -24,7 +24,7 @@ function PaginationTable() {
         console.log(res);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [isLoading]);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
